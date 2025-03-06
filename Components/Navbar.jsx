@@ -29,7 +29,7 @@ export const Navbar = () => {
   return (
     <nav className="w-full bg-white shadow-lg sticky top-0 z-50">
       <div className="container mx-auto p-4 flex justify-between items-center md:w-4/5">
-        <Image src={"/ProlanceHub.png"} height={150} width={150} alt='ProlanceHub'></Image>
+        <Link href={"/"}><Image src={"/ProlanceHub.png"} height={150} width={150} alt='ProlanceHub'></Image></Link>
 
         <div className="md:hidden flex gap-3">
           {/* Ensure session.user exists before accessing properties */}
