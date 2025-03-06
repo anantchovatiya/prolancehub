@@ -54,8 +54,8 @@ function BidPageContent() {
     }
 
     return (
-        <div className="p-6 bg-gray-100 flex items-center justify-center mx-auto">
-            <div className="p-4 bg-white shadow-md rounded-lg w-1/2 ml-5">
+        <div className="p-6 bg-gray-100 flex flex-col md:flex-row items-center justify-center mx-auto min-h-screen">
+            <div className="p-4 bg-white shadow-md rounded-lg w-full md:w-1/2 mb-6 md:mb-0 md:mr-5">
                 <h1 className="text-2xl font-bold mb-4">Project Details</h1>
                 <h2 className="text-xl font-semibold">{project.title}</h2>
                 <p className="text-gray-600">{project.description}</p>
@@ -73,7 +73,7 @@ function BidPageContent() {
                     {project.completed ? "Completed" : "Ongoing"}
                 </p>
             </div>
-            <div className="w-1/2">
+            <div className="w-full md:w-1/2">
                 <BidNow title={project.title} email={email} />
             </div>
         </div>
