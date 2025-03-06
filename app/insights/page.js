@@ -7,6 +7,7 @@ import Predictor from '@/Components/Predictor';
 import techTrends from '@/public/techTrends';
 import Image from 'next/image';
 import { useRef } from 'react';
+import Chatbot from '@/Components/Chatbot';
 
 export default function AIInsights() {
   const [newsData, setNewsData] = useState([]);
@@ -144,6 +145,7 @@ export default function AIInsights() {
           </div>
         )}
       </div>
+      <Chatbot />
     </div>
   );
 }
