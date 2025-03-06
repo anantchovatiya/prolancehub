@@ -1,0 +1,12 @@
+[
+    { "skill": "Artificial Intelligence (AI) & ML", "salary": 150000 },
+    { "skill": "Cloud Computing (AWS, Azure, GCP)", "salary": 140000 },
+    { "skill": "Cybersecurity & Ethical Hacking", "salary": 130000 },
+    { "skill": "Blockchain Development (Web3, DeFi)", "salary": 125000 },
+    { "skill": "Data Science & Analytics", "salary": 120000 },
+    { "skill": "DevOps & Automation", "salary": 115000 },
+    { "skill": "Full-Stack Development (MERN, Next.js)", "salary": 110000 },
+    { "skill": "Internet of Things (IoT)", "salary": 105000 },
+    { "skill": "AR/VR Development (Unity, Unreal)", "salary": 100000 },
+    { "skill": "Quantitative Finance & Algo Trading", "salary": 100000 }
+]
