@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import Loading from "@/Components/Loading";
 
 export default function EditProfilePage() {
   const { data: session, status } = useSession();
@@ -71,7 +72,7 @@ export default function EditProfilePage() {
   };
 
   if (loading) {
-    return <p className="text-center text-gray-600">Loading profile...</p>;
+    return <Loading />;
   }
 
   return (
