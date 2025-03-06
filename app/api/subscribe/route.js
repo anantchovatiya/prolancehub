@@ -1,38 +1,89 @@
-import { NextResponse } from "next/server";
-import { Resend } from "resend";
+"use client";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+import React, { useState, useEffect, Suspense } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { getclient } from "@/actions/getclient";
+import BidNow from "@/Components/Bidform";
+import Loading from "@/Components/Loading";
 
-export async function POST(req) {
-    const { email } = await req.json();
+function BidPageContent() {
+    const { data: session, status } = useSession();
+    const searchParams = useSearchParams();
+    const router = useRouter();
 
-    if (!email) {
-        return NextResponse.json({ error: "Email is required" }, { status: 400 });
+    const [project, setProject] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    const title = searchParams.get("title");
+    const email = searchParams.get("email");
+
+    useEffect(() => {
+        if (!session) {
+            router.push("/login");
+            return;
+        }
+
+        async function fetchClientData() {
+            try {
+                const clientData = await getclient({ email });
+                const foundproject = clientData.projects?.find(
+                    (proj) => proj.title.toLowerCase() === title.toLowerCase()
+                );
+                setProject(foundproject);
+            } catch (error) {
+                console.error("Error fetching client:", error);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        fetchClientData();
+    }, [email, session, router, title]);
+
+    if (status === "loading" || loading) {
+        return <Loading />;
     }
 
-    try {
-        await resend.emails.send({
-            from: "onboarding@resend.dev", // Use Resend's test email
-            to: email,
-            subject: "Welcome to ProLanceHub - Your Freelancing Journey Starts Now!",
-            html: `
-  <div style="text-align: center;">
-    <img src="https://res.cloudinary.com/dj8zkgqkg/image/upload/v1741267168/ProlanceHub_gcnq1g.png" alt="ProLanceHub Logo" style="width: 200px; margin-bottom: 20px;" />
-    <h2>Thank You for Subscribing to ProLanceHub!</h2>
-    <p>We're thrilled to have you on board. ProLanceHub connects freelancers with top clients, offering a seamless job marketplace experience.</p>
-    <p>🚀 Start exploring opportunities, showcase your skills, and grow your freelancing career.</p>
-    <p>Stay tuned for updates, job alerts, and exclusive freelancer tips!</p>
-    <br/>
-    <p>Best Regards,</p>
-    <p><strong>ProLanceHub Team</strong></p>
-    <p style="color: gray; font-size: 12px;">Developed by Anant Chovatiya</p>
-  </div>
-`
-        });
-
-        return NextResponse.json({ message: "Email sent!" }, { status: 200 });
-    } catch (error) {
-        console.error(error);
-        return NextResponse.json({ error: "Failed to send email" }, { status: 500 });
+    if (!project) {
+        return (
+            <div className="p-6 bg-gray-100 min-h-screen text-center text-red-500 font-semibold">
+                No project found with the title "{title}".
+            </div>
+        );
     }
+
+    return (
+        <div className="p-6 bg-gray-100 flex flex-col md:flex-row items-center justify-center mx-auto min-h-screen">
+            <div className="p-4 bg-white shadow-md rounded-lg w-full md:w-1/2 mb-6 md:mb-0 md:mr-5">
+                <h1 className="text-2xl font-bold mb-4">Project Details</h1>
+                <h2 className="text-xl font-semibold">{project.title}</h2>
+                <p className="text-gray-600">{project.description}</p>
+                <br />
+                <p className="text-blue-600 font-medium">Budget: ${project.budget}</p>
+                <br />
+                <p className="text-gray-700">Skills Required: {project.skillsRequired.join(", ")}</p>
+                <br />
+                <p className="text-gray-500">Deadline: {new Date(project.deadline).toLocaleDateString()}</p>
+                <p
+                    className={`text-sm font-bold ${
+                        project.completed ? "text-green-600" : "text-red-600"
+                    }`}
+                >
+                    {project.completed ? "Completed" : "Ongoing"}
+                </p>
+            </div>
+            <div className="w-full md:w-1/2">
+                <BidNow title={project.title} email={email} />
+            </div>
+        </div>
+    );
+}
+
+export default function Page() {
+    return (
+        <Suspense fallback={<Loading />}>
+            <BidPageContent />
+        </Suspense>
+    );
 }
