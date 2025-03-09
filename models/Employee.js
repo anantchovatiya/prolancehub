@@ -9,7 +9,6 @@ const EmployeeSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
-        unique: true,
         lowercase: true,
     },
     company: {
@@ -19,7 +18,6 @@ const EmployeeSchema = new mongoose.Schema({
     },
     phone: {
         type: String,
-        unique: true,
         sparse: true,
         default: null, // Avoids unique constraint issues
     },
