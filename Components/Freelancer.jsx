@@ -58,9 +58,10 @@ export default function Freelancer() {
     : 0;
 
 // Count ratings per star (1-5)
-const ratingCounts = Array(5)
-  .fill(0)
-  .map((_, i) => user.ratings.filter((r) => r === i + 1).length);
+const ratingCounts = Array(5).fill(0);
+user.ratings.forEach((rating) => {
+  ratingCounts[rating - 1]++; // Map rating 1-5 to index 0-4
+});
 
 // Percentage Calculation
 const totalRatings = user.ratings.length;
