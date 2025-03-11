@@ -24,6 +24,9 @@ export default function RootLayout({ children }) {
     <>
       <SessionWrapper>
       <html lang="en">
+        <head> 
+            <meta name="google-site-verification" content="N8drBAWPKvOWEnZVG183gkRmH7ODxfUHlgmvRI8hd8M" />
+        </head>
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-100`}
         >
