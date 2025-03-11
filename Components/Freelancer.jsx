@@ -66,7 +66,7 @@ user.ratings.forEach((rating) => {
 // Percentage Calculation
 const totalRatings = user.ratings.length;
 const ratingPercentages = ratingCounts.map((count) =>
-  totalRatings ? (count / totalRatings) * 100 : 0);
+  totalRatings ? (count / totalRatings) * 100 : 0).reverse();
 
   return (
     <div className="container mx-auto p-6">
