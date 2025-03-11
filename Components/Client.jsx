@@ -7,6 +7,8 @@ import Link from 'next/link';
 import { getbids } from '@/actions/getbids';
 import { motion } from "framer-motion";
 import { FaPlus } from 'react-icons/fa';
+import Loading from './Loading';
+
 export default function ClientProfile() {
   const { data: session } = useSession();
   const email = session?.user?.email;
@@ -34,6 +36,8 @@ export default function ClientProfile() {
     }
   }, [email]);
 
+  if(loading) return <Loading />;
+  
   const toggleBids = (title) => {
     setSelectedProjectBids((prev) => ({
       ...prev,
