@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "ProlancHub",
+  title: "ProlanceHub",
   description: "Freelancing platform for professionals"
 };
 
