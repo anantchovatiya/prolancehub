@@ -9,7 +9,7 @@ import Image from 'next/image';
 import { useRef } from 'react';
 import Chatbot from '@/Components/Chatbot';
 import ProjectVisualizer from '@/Components/ProjectVisualizer';
-import SkillRecommendation from '@/Components/SkillRecommendation';
+
 
 export default function AIInsights() {
   const [newsData, setNewsData] = useState([]);
