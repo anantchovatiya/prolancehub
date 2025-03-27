@@ -8,17 +8,20 @@ import techTrends from '@/public/techTrends';
 import Image from 'next/image';
 import { useRef } from 'react';
 import Chatbot from '@/Components/Chatbot';
+import ProjectVisualizer from '@/Components/ProjectVisualizer';
+import SkillRecommendation from '@/Components/SkillRecommendation';
 
 export default function AIInsights() {
   const [newsData, setNewsData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [expanded, setExpanded] = useState(null);
+  const [activeTab, setActiveTab] = useState('market');
   const detailsRef = useRef(null);
+
   const handleScroll = () => {
     detailsRef.current?.scrollIntoView({ behavior: "smooth" });
   };
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,7 +44,7 @@ export default function AIInsights() {
 
   return (
     <div className="min-h-screen">
-      <div className="w-full flex md:min-h-screen justify-center flex-col md:flex-row-reverse  items-center">
+      <div className="w-full flex md:min-h-screen justify-center flex-col md:flex-row-reverse items-center">
         {/* Left Content Section */}
         <div className="p-5 md:w-1/2 text-center md:text-left">
           <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 leading-tight">
@@ -63,7 +66,7 @@ export default function AIInsights() {
         {/* Right Image Section */}
         <div className="md:w-1/2 flex justify-center mt-10 md:mt-0 p-2">
           <Image
-            src="/ai.png" // Ensure you place the image in /public/images/
+            src="/ai.png"
             alt="AI for Freelancing"
             width={600}
             height={600}
@@ -71,79 +74,123 @@ export default function AIInsights() {
           />
         </div>
       </div>
+
       <div className="max-w-7xl mx-auto px-6" ref={detailsRef}>
+        <h1 className="mt-20 text-4xl font-bold text-gray-900 mb-6">AI Insights</h1>
 
-        <h1 className="mt-20 text-4xl font-bold text-gray-900 mb-6">Insights</h1>
-        <ChartComponent />
+        {/* Tab Navigation */}
+        <div className="border-b border-gray-200 mb-6">
+          <nav className="flex space-x-8">
+            <button
+              onClick={() => setActiveTab('market')}
+              className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                activeTab === 'market'
+                  ? 'border-gray-800 text-gray-800'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
+            >
+              Market Analysis
+            </button>
+            <button
+              onClick={() => setActiveTab('success')}
+              className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                activeTab === 'success'
+                  ? 'border-gray-800 text-gray-800'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
+            >
+              Project Planner
+            </button>
 
-        {/* AI-Detected Tech Trends */}
-        <div className="bg-white p-6 rounded-lg shadow-lg mt-8">
-      <h2 className="text-xl md:text-3xl font-bold text-gray-900 mb-5 flex items-center gap-2">
-        🔥 AI-Detected Tech Trends
-      </h2>
-      <ul className="space-y-4">
-        {techTrends.map((tech, index) => (
-          <div
-            key={index}
-            className="bg-gray-50 p-4 rounded-lg shadow-md cursor-pointer transition-transform transform hover:scale-105 duration-300 ease-in-out"
-            onClick={() => setExpanded(expanded === index ? null : index)}
-          >
-            {/* Header Section */}
-            <div className="flex justify-between items-center">
-              <span className="font-semibold text-gray-800 text-sm md:text-lg">{tech.name}</span>
-              <span className="text-gray-600 text-[9px] md:font-medium">{tech.trend}</span>
-            </div>
+          </nav>
+        </div>
 
-            {/* Expanding Description */}
-            <AnimatePresence>
-              {expanded === index && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  className="mt-3 text-gray-700 text-sm bg-white p-3 rounded-md border border-gray-200"
-                >
-                  <ul className="list-disc pl-5 space-y-2">
-                    {tech.description.split("\n").map((line, idx) => {
-                      // Check if line contains ": " to bolden key aspects
-                      const parts = line.split(": ");
-                      return (
-                       <div key={idx}>
-                          {parts[0].includes("Future Trends") || parts[0].includes("Key Aspects") ? (
-                            <span className="text-gray-800 font-extrabold">{parts[0]}</span>
-                          ) : (
-                            <span className="font-bold">{parts[0]}</span>
-                          )}{" "}
-                          {parts[1] || ""}
-                        </div>
-                      );
-                    })}
-                  </ul>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-        ))}
-      </ul>
-    </div>
+        {/* Tab Content */}
+        <div className="tab-content">
+          {/* Market Analysis Tab */}
+          {activeTab === 'market' && (
+            <div>
+              <ChartComponent />
 
-        <Predictor />
+              {/* AI-Detected Tech Trends */}
+              <div className="bg-white p-6 rounded-lg shadow-lg mt-8">
+                <h2 className="text-xl md:text-3xl font-bold text-gray-900 mb-5 flex items-center gap-2">
+                  🔥 AI-Detected Tech Trends
+                </h2>
+                <ul className="space-y-4">
+                  {techTrends.map((tech, index) => (
+                    <div
+                      key={index}
+                      className="bg-gray-50 p-4 rounded-lg shadow-md cursor-pointer transition-transform transform hover:scale-105 duration-300 ease-in-out"
+                      onClick={() => setExpanded(expanded === index ? null : index)}
+                    >
+                      {/* Header Section */}
+                      <div className="flex justify-between items-center">
+                        <span className="font-semibold text-gray-800 text-sm md:text-lg">{tech.name}</span>
+                        <span className="text-gray-600 text-[9px] md:font-medium">{tech.trend}</span>
+                      </div>
 
-        {/* Recent Tech News */}
-        {newsData.length > 0 && (
-          <div className="bg-white shadow-lg rounded-lg mt-8 p-6">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-4">📰 Recent Tech News</h2>
-            <div className="space-y-4">
-              {newsData.slice(0, 3).map((story) => (
-                <div key={story.id} className="border-b pb-4">
-                  <h3 className="text-lg font-medium text-gray-900">{story.title}</h3>
-                  <p className="text-sm text-gray-500 mt-1">{new Date(story.time * 1000).toLocaleDateString()} • {story.score} points • by {story.by}</p>
-                  <p className="text-sm text-gray-600 mt-2">AI Analysis: This could impact your business by bringing new opportunities in {story.title.toLowerCase().includes('web') ? 'web development' : story.title.toLowerCase().includes('ai') ? 'AI integration' : story.title.toLowerCase().includes('mobile') ? 'mobile app development' : 'technology'}.</p>
+                      {/* Expanding Description */}
+                      <AnimatePresence>
+                        {expanded === index && (
+                          <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: "auto" }}
+                            exit={{ opacity: 0, height: 0 }}
+                            className="mt-3 text-gray-700 text-sm bg-white p-3 rounded-md border border-gray-200"
+                          >
+                            <ul className="list-disc pl-5 space-y-2">
+                              {tech.description.split("\n").map((line, idx) => {
+                                // Check if line contains ": " to bolden key aspects
+                                const parts = line.split(": ");
+                                return (
+                                 <div key={idx}>
+                                    {parts[0].includes("Future Trends") || parts[0].includes("Key Aspects") ? (
+                                      <span className="text-gray-800 font-extrabold">{parts[0]}</span>
+                                    ) : (
+                                      <span className="font-bold">{parts[0]}</span>
+                                    )}{" "}
+                                    {parts[1] || ""}
+                                  </div>
+                                );
+                              })}
+                            </ul>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Recent Tech News */}
+              {newsData.length > 0 && (
+                <div className="bg-white shadow-lg rounded-lg mt-8 p-6">
+                  <h2 className="text-2xl font-semibold text-gray-800 mb-4">📰 Recent Tech News</h2>
+                  <div className="space-y-4">
+                    {newsData.slice(0, 3).map((story) => (
+                      <div key={story.id} className="border-b pb-4">
+                        <h3 className="text-lg font-medium text-gray-900">{story.title}</h3>
+                        <p className="text-sm text-gray-500 mt-1">{new Date(story.time * 1000).toLocaleDateString()} • {story.score} points • by {story.by}</p>
+                        <p className="text-sm text-gray-600 mt-2">AI Analysis: This could impact your business by bringing new opportunities in {story.title.toLowerCase().includes('web') ? 'web development' : story.title.toLowerCase().includes('ai') ? 'AI integration' : story.title.toLowerCase().includes('mobile') ? 'mobile app development' : 'technology'}.</p>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              ))}
+              )}
             </div>
-          </div>
-        )}
+          )}
+
+          {/* Success Prediction Tab */}
+          {activeTab === 'success' && (
+            <div>
+              <ProjectVisualizer />
+              <Predictor />
+            </div>
+          )}
+
+
+        </div>
       </div>
       <Chatbot />
     </div>
